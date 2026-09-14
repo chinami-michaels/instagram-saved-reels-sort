@@ -1,5 +1,19 @@
 # Instagram Saved Reels Sort
 
+## One-paste install
+
+Copy the block below and paste it into a chat with your Muse:
+
+```
+Install the Instagram Saved Reels Sort skill:
+
+1. Clone https://github.com/chinami-michaels/instagram-saved-reels-sort into my agent's skills folder.
+2. Read its SKILL.md and README.md, then run python3 bin/setup.py and walk me through the one-time setup (defining my topics).
+3. When setup is done, ask if I want to sort my saved reels now.
+```
+
+Then just answer its questions — it handles the rest.
+
 An agent skill that files your Instagram saved reels into topic collections —
 in small, human-reviewable batches. Built for backlogs of hundreds or
 thousands of saved reels, and for a light recurring run that keeps new saves
