@@ -119,8 +119,24 @@ def main():
                 sys.exit("Invalid choice.")
             print(f"Using Instagram account: {uname}")
 
-    d = run("instagram-cli", "saved-collections", "--account-id", acct)
-    existing = find_collections(d) if d else []
+    existing = []
+    after = None
+    seen = set()
+    while True:
+        args = ["instagram-cli", "saved-collections", "--account-id", acct]
+        if after:
+            args += ["--after", after]
+        d = run(*args)
+        if not d:
+            break
+        existing += find_collections(d)
+        page_info = d.get("page_info") if isinstance(d, dict) else None
+        if not page_info or not page_info.get("has_next_page"):
+            break
+        after = page_info.get("end_cursor")
+        if not after or after in seen:
+            break
+        seen.add(after)
     if existing:
         print("\nExisting saved collections:")
         for cid, name in existing:
@@ -153,9 +169,8 @@ def main():
             print(f"  Creating collection '{name}' on Instagram...")
             r = run("instagram-cli", "create-saved-collection",
                     "--account-id", acct, "--name", name)
-            nc = find_collections(r) if r else []
-            if nc:
-                cid = nc[0][0]
+            cid = (r or {}).get("collection_id") or (r or {}).get("id")
+            if cid:
                 print("  Created.")
             else:
                 cid = ask("  Could not read the new collection id — paste it here")
