@@ -72,7 +72,7 @@ def find_collections(d):
         if not isinstance(c, dict):
             continue
         cid = c.get("collection_id") or c.get("id")
-        name = c.get("name") or c.get("title")
+        name = c.get("collection_name") or c.get("name") or c.get("title")
         if cid and name:
             out.append((str(cid), name))
     return out
